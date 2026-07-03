@@ -23,13 +23,13 @@ an upscale input + truth).
 
 ## Models (`models/`)
 
-| file | genome | task | framework | MRMP (features) | labels |
-|------|--------|------|-----------|-----------------|--------|
-| `hg38_celltype.ubjx` | hg38 | cell-type annotation | xgboost | `hg38_Zhou2025` (recurrence P1…P1000) | 62 human cell types (Alpha, ASC, AT1/AT2, B Mem/Naive/Plasma, Beta, … NK CD16/CD56, ODC, OPC, T subsets, …) |
-| `mm10_celltype.ubjx` | mm10 | cell-type annotation | xgboost | `mm10_Liu2021` (recurrence P1…P1000) | 41 mouse-brain cell types (ASC, CA1, CA3, DG, ODC, OPC, MGC, IT-L2/3…L6, PT-L5, …) |
-| `hg38_sex.ubjx` | hg38 | sex prediction | logistic | `hg38_Sex_20260612` — XCI markers, states `Xa_hi`/`Xa_lo` (not `P1…Pn`) | Female, Male |
-| `hg38_10k1.updecx` | hg38 | CpG-level upscaling | MLP decoder | 101-pattern block MRMP | block 10k1 (10 000 CpGs) |
-| `hg38_65celltypes.refx` | hg38 | cell-type deconvolution (NNLS) | refx | deterministic whole-body MRMP (8 202 patterns; Zhou single-cell + Loyfer WGBS) | 65 cell types = 58 Zhou + 7 Loyfer organ/blood (Hepatocyte, Granulocyte, Adipocyte, Kidney_Tubular, Kidney_Podocyte, Erythrocyte_prog, Thyroid) |
+| file | genome | task | framework | labels / cell types |
+|------|--------|------|-----------|---------------------|
+| `hg38_celltype.ubjx` | hg38 | cell-type annotation | xgboost | 62 human cell types (Alpha, ASC, AT1/AT2, B Mem/Naive/Plasma, Beta, … NK CD16/CD56, ODC, OPC, T subsets, …) |
+| `mm10_celltype.ubjx` | mm10 | cell-type annotation | xgboost | 41 mouse-brain cell types (ASC, CA1, CA3, DG, ODC, OPC, MGC, IT-L2/3…L6, PT-L5, …) |
+| `hg38_sex.ubjx` | hg38 | sex prediction | logistic | Female, Male (XCI `Xa_hi`/`Xa_lo` markers) |
+| `hg38_10k1.updecx` | hg38 | CpG-level upscaling | MLP decoder | block 10k1 (10 000 CpGs) |
+| `hg38_65celltypes.refx` | hg38 | cell-type deconvolution (NNLS) | refx | 65 cell types = 58 Zhou + 7 Loyfer organ/blood (Hepatocyte, Granulocyte, Adipocyte, Kidney_Tubular, Kidney_Podocyte, Erythrocyte_prog, Thyroid) |
 
 `methscope2 inspect <model>` prints the exact framework, full label list, and (for
 linear models) the per-feature weights.
