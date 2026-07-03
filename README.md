@@ -12,6 +12,10 @@ methscope2 upscale  models/hg38_10k1.updecx query.cg        # CpG-level upscalin
 methscope2 inspect  models/hg38_sex.ubjx                    # framework, labels, features
 ```
 
+Small query `.cg` fixtures used by the [MethScope2](https://github.com/zhou-lab/MethScope2)
+README tests live in `test/` (4 typed cells, a simulated deconvolution mixture, and
+an upscale input + truth).
+
 > The full MRMP definition sets (`*.cm`), pattern-definition tables (`*_def*`), and
 > deconvolution references (`*_ref.rds`) are archived at tag **`v1`**
 > (`git checkout v1`); `main` holds only the runnable models. MRMP construction
