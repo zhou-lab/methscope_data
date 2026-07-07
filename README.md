@@ -1,18 +1,18 @@
 # MethScope Data — models
 
-Trained models for [**MethScope2**](https://github.com/zhou-lab/MethScope2). Each
+Trained models for [**methscope-cli**](https://github.com/zhou-lab/methscope-cli). Each
 model is a single self-contained bundle (`.ubjx` classifier, `.updecx` upscale
 decoder, or `.refx` deconvolution reference) that already contains its MRMP feature
 definition (and labels / cell-type signature), so a query `.cg` can be run directly:
 
 ```sh
-methscope2 predict query.cg  models/hg38_celltype.ubjx      # cell-type / label
-methscope2 deconv  mixture.cg models/hg38_65celltypes.refx   # cell-type proportions (NNLS)
-methscope2 upscale  models/hg38_10k1.updecx query.cg        # CpG-level upscaling
-methscope2 inspect  models/hg38_sex.ubjx                    # framework, labels, features
+methscope predict query.cg  models/hg38_celltype.ubjx      # cell-type / label
+methscope deconv  mixture.cg models/hg38_65celltypes.refx   # cell-type proportions (NNLS)
+methscope upscale  models/hg38_10k1.updecx query.cg        # CpG-level upscaling
+methscope inspect  models/hg38_sex.ubjx                    # framework, labels, features
 ```
 
-Small query `.cg` fixtures used by the [MethScope2](https://github.com/zhou-lab/MethScope2)
+Small query `.cg` fixtures used by the [methscope-cli](https://github.com/zhou-lab/methscope-cli)
 README tests live in `test/` (4 typed cells, a simulated deconvolution mixture, and
 an upscale input + truth).
 
@@ -31,7 +31,7 @@ an upscale input + truth).
 | `hg38_10k1.updecx` | CpG-level upscaling | MLP decoder | block 10k1 (10 000 CpGs) |
 | `hg38_65celltypes.refx` | cell-type deconvolution (NNLS) | refx | 65 cell types = 58 Zhou + 7 Loyfer organ/blood (Hepatocyte, Granulocyte, Adipocyte, Kidney_Tubular, Kidney_Podocyte, Erythrocyte_prog, Thyroid); **split MRMP, 15,300 patterns** |
 
-`methscope2 inspect <model>` prints the exact framework, full label list, and (for
+`methscope inspect <model>` prints the exact framework, full label list, and (for
 linear models) the per-feature weights.
 
 ### Notes
@@ -42,8 +42,9 @@ linear models) the per-feature weights.
 - **hg38_65celltypes.refx** is a whole-body deconvolution reference (cell-type ×
   pattern β signature + its MRMP), built on a **deterministic, reproducible**
   binstring MRMP (no random tie-break, ambiguity-filtered) over 58 Zhou single-cell
-  types + 7 Loyfer bulk-WGBS organ/blood types (liver, kidney, adipose, neutrophil,
-  erythroid, thyroid), for whole-body / cfDNA deconvolution. The MRMP is **split**
+  types + 7 Loyfer bulk-WGBS organ/blood types (liver, kidney tubular, kidney
+  podocyte, adipose, neutrophil, erythroid, thyroid), for whole-body / cfDNA
+  deconvolution. The MRMP is **split**
   (each recurrence pattern's CpGs chunked into 1000-CpG genomic groups → 15,300
   patterns), which greatly improves **sparse / low-coverage** deconvolution: on 60
   simulated immune mixtures downsampled to 2¹⁶ (65k) binarized CpGs it reaches
