@@ -1,34 +1,45 @@
-# MethScope Data — models
+# MethScope Data — model catalog, test fixtures, reproducibility archive
 
-Trained models for [**methscope-cli**](https://github.com/zhou-lab/methscope-cli). Each
-model is a single self-contained bundle (`.ubjx` classifier, `.updecx` upscale
-decoder, or `.refx` deconvolution reference) that already contains its MRMP feature
-definition (and labels / cell-type signature), so a query `.cg` can be run directly:
+Companion data repo for [**methscope-cli**](https://github.com/zhou-lab/methscope-cli).
+The **runnable model bundles are hosted on HuggingFace** — too large for git —
+at [`zhou-lab/methscope`](https://huggingface.co/zhou-lab/methscope). This repo
+holds what stays in git: the model **catalog** (below), small **test fixtures**
+(`test/`), and the MRMP-construction **reproducibility archive** (tag `v1`).
+
+Each model is a single self-contained bundle (`.ubjx` classifier, `.updecx`
+upscale decoder, or `.refx` deconvolution reference) that already contains its
+MRMP feature definition (and labels / cell-type signature), so a query `.cg`
+runs directly:
 
 ```sh
-methscope predict query.cg  models/hg38_celltype.ubjx      # cell-type / label
+# fetch models from HuggingFace (--local-dir models to grab all)
+hf download zhou-lab/methscope hg38_celltype.ubjx --local-dir models
+
+methscope predict query.cg   models/hg38_celltype.ubjx     # cell-type / label
 methscope deconv  mixture.cg models/hg38_65celltypes.refx   # cell-type proportions (NNLS)
-methscope upscale  models/hg38_10k1.updecx query.cg        # CpG-level upscaling
-methscope inspect  models/hg38_sex.ubjx                    # framework, labels, features
+methscope upscale -o out.cg  models/hg38_wg.updecx query.cg # genome-wide CpG upscaling
+methscope inspect            models/hg38_sex.ubjx           # framework, labels, features
 ```
 
-Small query `.cg` fixtures used by the [methscope-cli](https://github.com/zhou-lab/methscope-cli)
-README tests live in `test/` (4 typed cells, a simulated deconvolution mixture, and
-an upscale input + truth).
+Small query `.cg` fixtures used by the
+[methscope-cli](https://github.com/zhou-lab/methscope-cli) README/examples live
+here in `test/` (4 typed cells, a simulated deconvolution mixture, and an
+upscale input + truth).
 
-> The full MRMP definition sets (`*.cm`), pattern-definition tables (`*_def*`), and
-> deconvolution references (`*_ref.rds`) are archived at tag **`v1`**
-> (`git checkout v1`); `main` holds only the runnable models. MRMP construction
-> recipes live in the MethScope lab journal (`20251216_methscope.org`).
+> The full MRMP definition sets (`*.cm`), pattern-definition tables (`*_def*`),
+> and deconvolution references (`*_ref.rds`) are archived at tag **`v1`**
+> (`git checkout v1`). MRMP construction recipes live in the MethScope lab
+> journal (`20251216_methscope.org`).
 
-## Models (`models/`)
+## Models — [huggingface.co/zhou-lab/methscope](https://huggingface.co/zhou-lab/methscope)
 
 | file | task | framework | labels / cell types |
 |------|------|-----------|---------------------|
+| `hg38_wg.updecx` | whole-genome CpG upscaling | `UPDEC2` | all 29,401,795 hg38 CpGs; the primary upscaler (2.8 GB) |
+| `hg38_10k1.updecx` | CpG upscaling (single block) | MLP decoder | block 10k1 (10,000 CpGs); small demo model |
 | `hg38_celltype.ubjx` | cell-type annotation | xgboost | 62 human cell types (Alpha, ASC, AT1/AT2, B Mem/Naive/Plasma, Beta, … NK CD16/CD56, ODC, OPC, T subsets, …) |
 | `mm10_celltype.ubjx` | cell-type annotation | xgboost | 41 mouse-brain cell types (ASC, CA1, CA3, DG, ODC, OPC, MGC, IT-L2/3…L6, PT-L5, …) |
 | `hg38_sex.ubjx` | sex prediction | logistic | Female, Male (XCI `Xa_hi`/`Xa_lo` markers) |
-| `hg38_10k1.updecx` | CpG-level upscaling | MLP decoder | block 10k1 (10 000 CpGs) |
 | `hg38_65celltypes.refx` | cell-type deconvolution (NNLS) | refx | 65 cell types = 58 Zhou + 7 Loyfer organ/blood (Hepatocyte, Granulocyte, Adipocyte, Kidney_Tubular, Kidney_Podocyte, Erythrocyte_prog, Thyroid); **split MRMP, 15,300 patterns** |
 
 `methscope inspect <model>` prints the exact framework, full label list, and (for
@@ -39,6 +50,11 @@ linear models) the per-feature weights.
   `logistic`); `predict` rejects an unmarked bundle. Upscale decoders (`.updecx`)
   are run by `upscale`, and deconvolution references (`.refx`, `kind=refx`) by
   `deconv`; both need no framework mark.
+- **hg38_wg.updecx** is the whole-genome upscaler (unified `UPDEC2`, one
+  processing unit per MRMP membership). It reconstructs dense methylation over
+  all 29.4M hg38 CpGs from a sparse query; pure-C inference (~2 s/sample). The
+  single-block `hg38_10k1.updecx` is retained as a small demo. Training + the
+  external-cohort validation are recorded in `20251216_methscope.org`.
 - **hg38_65celltypes.refx** is a whole-body deconvolution reference (cell-type ×
   pattern β signature + its MRMP), built on a **deterministic, reproducible**
   binstring MRMP (no random tie-break, ambiguity-filtered) over 58 Zhou single-cell
@@ -58,8 +74,3 @@ linear models) the per-feature weights.
   (2018_Zhou) it reaches ~95.8% (vs a manual β(Xa_hi)−β(Xa_lo) score); the misses
   are XCI-disrupted samples (leukemias, tumors, cell lines, PGCs, oocytes). The
   interpretable `threshold` variant is derivable by hand, so it is not shipped.
-
-## Citation
-
-Hongxiang Fu, Chin Nien Lee, Cameron Cloud, Hao Xu, Yanxiang Deng, Wanding Zhou,
-MethScope: Ultra-fast Analysis of Sparse DNA Methylome via Recurrent Pattern Encoding.
