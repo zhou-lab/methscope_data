@@ -24,7 +24,25 @@ methscope inspect            models/hg38_sex.ubjx           # framework, labels,
 Small query `.cg` fixtures used by the
 [methscope-cli](https://github.com/zhou-lab/methscope-cli) README/examples live
 here in `test/` (4 typed cells, a simulated deconvolution mixture, and an
-upscale input + truth).
+upscale input + truth), plus one small **reference** so `mrmp-build` is
+runnable without the 2.3 GB atlas:
+
+`test/human_hg38_40_celltypes_chr20.cg` — 40 Loyfer cell types, chr20 only
+(773,477 CpGs, 40 MB). `mrmp-build` packs a pattern as a base-3 `uint64` and
+3^40 < 2^64 < 3^41, so 40 samples is the hard ceiling; chr20 keeps it small
+enough to ship. Rebuild it from the lab store with:
+
+```sh
+L=/mnt/isilon/zhou_lab/projects/20230727_all_public_WGBS/hg38/2023_Loyfer.cg
+# one sample per cell type, every other type across the atlas -> 40 of 82
+yame subset $L $(tr '\n' ' ' < pick40.txt) \
+  | yame rowsub -B 15511118_16284595 - > human_hg38_40_celltypes_chr20.cg
+yame index -s pick40.txt human_hg38_40_celltypes_chr20.cg
+# chr20 row range is from ~/references/hg38/KYCGKB_hg38/cpg_nocontig.cr
+```
+
+It yields 116,450 distinct patterns over 773,477 CpGs (15.0% PNA); the sample
+selection is listed in `test/human_hg38_40_celltypes_chr20.cg.idx`.
 
 > The full MRMP definition sets (`*.cm`), pattern-definition tables (`*_def*`),
 > and deconvolution references (`*_ref.rds`) are archived at tag **`v1`**
