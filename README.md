@@ -34,15 +34,16 @@ enough to ship. Rebuild it from the lab store with:
 
 ```sh
 L=/mnt/isilon/zhou_lab/projects/20230727_all_public_WGBS/hg38/2023_Loyfer.cg
-# one sample per cell type, every other type across the atlas -> 40 of 82
+# the shipped .cg.idx *is* the sample list -- one per cell type, every other
+# type across the atlas, 40 of Loyfer's 82
+cut -f1 test/human_hg38_40_celltypes_chr20.cg.idx > pick40.txt
 yame subset $L $(tr '\n' ' ' < pick40.txt) \
   | yame rowsub -B 15511118_16284595 - > human_hg38_40_celltypes_chr20.cg
 yame index -s pick40.txt human_hg38_40_celltypes_chr20.cg
-# chr20 row range is from ~/references/hg38/KYCGKB_hg38/cpg_nocontig.cr
+# the chr20 row range comes from ~/references/hg38/KYCGKB_hg38/cpg_nocontig.cr
 ```
 
-It yields 116,450 distinct patterns over 773,477 CpGs (15.0% PNA); the sample
-selection is listed in `test/human_hg38_40_celltypes_chr20.cg.idx`.
+It yields 116,450 distinct patterns over 773,477 CpGs (15.0% PNA).
 
 > The full MRMP definition sets (`*.cm`), pattern-definition tables (`*_def*`),
 > and deconvolution references (`*_ref.rds`) are archived at tag **`v1`**
