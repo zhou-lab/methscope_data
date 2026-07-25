@@ -45,6 +45,12 @@ yame index -s pick40.txt human_hg38_40_celltypes_chr20.cg
 
 It yields 116,450 distinct patterns over 773,477 CpGs (15.0% PNA).
 
+`test/SHA256SUMS` records the digest of every fixture (`sha256sum -c
+SHA256SUMS`). It is a convenience for anyone verifying by hand: `methscope
+fetch` does not read it, because each digest is compiled into the tool's
+registry, so a download is checked against something the binary already held
+rather than against a file served by the same host.
+
 > The full MRMP definition sets (`*.cm`), pattern-definition tables (`*_def*`),
 > and deconvolution references (`*_ref.rds`) are archived at tag **`v1`**
 > (`git checkout v1`). MRMP construction recipes live in the MethScope lab
