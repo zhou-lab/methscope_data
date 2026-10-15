@@ -1,13 +1,14 @@
 # MethScope Data — test fixtures, reproducibility archive
 
 Companion data repo for [**methscope-cli**](https://github.com/zhou-lab/methscope-cli).
-The runnable model bundles are hosted on HuggingFace — too large for git — at
-[`zhou-lab/methscope`](https://huggingface.co/zhou-lab/methscope); model
-descriptions live with the models (the HuggingFace model card and the
-[methscope-cli documentation](https://github.com/zhou-lab/methscope-cli)), and
-their published digests in the YAME registry, so nothing here needs updating
-when a model does. This repo holds what stays in git: small **test fixtures**
-(`test/`) and the MRMP-construction **reproducibility archive** (tag `v1`).
+**This repo carries no models — only small test data.** Every model and
+reference lives on HuggingFace at
+[`zhou-lab/methscope`](https://huggingface.co/zhou-lab/methscope), with its
+description (the HuggingFace model card and the
+[methscope-cli documentation](https://github.com/zhou-lab/methscope-cli)) and
+its published digest in the YAME registry, so nothing here needs updating when
+a model does. What stays in git: small **test fixtures** (`test/`) used by the
+examples, and the MRMP-construction **reproducibility archive** (tag `v1`).
 
 ## Test fixtures (`test/`)
 
