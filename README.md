@@ -43,3 +43,33 @@ The full MRMP definition sets (`*.cm`), pattern-definition tables (`*_def*`),
 and legacy deconvolution references (`*_ref.rds`) are archived at tag **`v1`**
 (`git checkout v1`). MRMP construction recipes live in the MethScope lab
 journal (`20251216_methscope.org`).
+
+## License
+
+The data in this repository, at every tag (`v1` through `v4`) and on `main`,
+are released under the
+[Creative Commons Attribution 4.0 International license (CC BY 4.0)](LICENSE).
+Files derived from third-party datasets (see Sources) remain subject to the
+original datasets' terms as well; cite the original studies when you use them.
+The pretrained models on HuggingFace are under the CHOP academic BSD-2 license
+(see the [model card](https://huggingface.co/zhou-lab/methscope)), and the
+software under the
+[methscope-cli license](https://github.com/zhou-lab/methscope-cli/blob/main/LICENSE).
+
+## Sources
+
+The fixtures, the archived MRMP sets and the pretrained models derive from:
+
+- **Loyfer et al. 2023**, *Nature* 613:355-364, human cell-type WGBS atlas
+  (GEO GSE186458): `human_hg38_celltypes.cg`,
+  `human_hg38_40_celltypes_chr20.cg`, the `hg38_Loyfer*` and
+  `hg38_LoyferPlusZhou` sets at `v1`.
+- **Liu et al. 2021**, *Nature* 598:120-128, mouse brain single-nucleus
+  methylomes (GEO GSE132489; NeMO): `mm10_Liu2021` at `v1`.
+- **1000 Genomes Project**: `hg38_1KG` at `v1`.
+- **Zhou et al. 2025**, human single-cell methylation atlas: `hg38_Zhou2025`
+  and `hg38_LoyferPlusZhou` at `v1`, `human_hg38_immune_mixture.cg`.
+  TODO: publication and accession.
+- **BLUEPRINT**: immune pools in the `hg38_33celltypes` reference. TODO:
+  confirm the release and its access terms.
+- `hg38_Sex_20260612` at `v1`. TODO: record the training data.
