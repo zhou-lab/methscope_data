@@ -63,14 +63,12 @@ The fixtures, the archived MRMP sets and the pretrained models derive from:
 
 - **Loyfer et al. 2023**, *Nature* 613:355-364, human cell-type WGBS atlas
   (GEO GSE186458): `human_hg38_celltypes.cg`,
-  `human_hg38_40_celltypes_chr20.cg`, the `hg38_Loyfer*` and
-  `hg38_LoyferPlusZhou` sets at `v1`.
+  `human_hg38_40_celltypes_chr20.cg`, the `hg38_Loyfer*`,
+  `hg38_LoyferPlusZhou` and `hg38_Sex_20260612` sets at `v1`.
 - **Liu et al. 2021**, *Nature* 598:120-128, mouse brain single-nucleus
   methylomes (GEO GSE132489; NeMO): `mm10_Liu2021` at `v1`.
 - **1000 Genomes Project**: `hg38_1KG` at `v1`.
 - **Zhou et al. 2025**, human single-cell methylation atlas: `hg38_Zhou2025`
   and `hg38_LoyferPlusZhou` at `v1`, `human_hg38_immune_mixture.cg`.
-  TODO: publication and accession.
-- **BLUEPRINT**: immune pools in the `hg38_33celltypes` reference. TODO:
-  confirm the release and its access terms.
-- `hg38_Sex_20260612` at `v1`. TODO: record the training data.
+- **BLUEPRINT** (Stunnenberg et al. 2016, *Cell* 167:1145): immune pools in
+  the `hg38_33celltypes` reference.
